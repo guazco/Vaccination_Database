@@ -8,47 +8,66 @@ fake = Faker('pt_BR') # Setting the data language as PT-BR
 """The following process was necessary because running fake.name() 
     would sometimes return Sr. or Dr. before the actual name"""
 
+
+
 # FAKE NAMES 
 
-names = [fake.first_name() for i in range(30)] # Generate fake first names
-
-last_names = [fake.last_name() for i in range(30)] # Generate fake last names
-
-complete_names =  [names[i] + " " + last_names[i] for i in range(30)] # Generate fake complete names
+def fake_names(n):
+    names = [fake.first_name() for i in range(n)] # Generate fake first names
+    last_names = [fake.last_name() for i in range(n)] # Generate fake last names
+    complete_names =  [names[i] + " " + last_names[i] for i in range(n)] # Generate fake complete names
+    return complete_names
 
 # BIRTHDAY GENERATOR
 
-birthday = [fake.date_of_birth() for i in range(30)]
+def fake_birth(n):
+    birthday = [fake.date_of_birth() for i in range(n)]
+    return birthday
 
 # ETHNICITY GENERATOR
 
-possible_ethnicities = ['Branco','Pardo','Pretos','Amarelos','Indígenas']
-ethnicity = [possible_ethnicities[np.random.randint(5)] for i in range(30)]
+def fake_et(n):
+    possible_ethnicities = ['Branco','Pardo','Pretos','Amarelos','Indígenas']
+    ethnicity = [possible_ethnicities[np.random.randint(5)] for i in range(n)]
+    return ethnicity
 
 # OCUPATION GENERATOR
 
-ocupation = [fake.job() for i in range(30)]
+def fake_oc(n):
+    ocupation = [fake.job() for i in range(n)]
+    return ocupation
 
 # POPULATION GENERATOR
 
-average_population = 44040000/645
-mu, sigma = average_population, 2.5
-s = np.random.normal(mu, sigma)
-
-population = [np.random.normal(mu, sigma) for i in range(30)]
+def fake_pop(n):
+    average_population = 44040000/645
+    mu, sigma = average_population, 2.5
+    s = np.random.normal(mu, sigma)
+    population = [np.random.normal(mu, sigma) for i in range(n)]
+    return population
 
 # CPF GENERATOR
 
-cpf = np.random.randint(10000000000,99999999999,size=30,dtype=np.int64)
+def fake_cpf(n):
+    cpf = np.random.randint(10000000000,99999999999,size=n,dtype=np.int64)
+    return cpf
 
 # ADDRESS GENERATOR
 
-address_initial = [fake.address() for i in range(30)] # Generate fake addresses with states 
-address_final = [i[0:-4] for i in address_initial] # Takes out the state information as if it was a city from SP
+def fake_add(n):
+    address = []
+    while(len(address) != n):
+        add = fake.address()
+        if(add[-2:len(add)]=="SP"): # filter addresses from sP
+            print(add)
+            address.append(add)
+    return address
 
 # EXPIRATION DATE GENERATOR
 
-expiration = [fake.future_date() for i in range(30)]
+def fake_exp(n):
+    expiration = [fake.future_date() for i in range(n)]
+    return expiration
 
 # CITY NAME GENERATOR
 
@@ -57,7 +76,7 @@ expiration = [fake.future_date() for i in range(30)]
 
 
 
-print(expiration)
+print(fake_add(30))
 
 
 

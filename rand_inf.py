@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from faker import Faker
 from random import *
 
@@ -18,6 +17,13 @@ def fake_names(n):
     complete_names =  [names[i] + " " + last_names[i] for i in range(n)] # Generate fake complete names
     return complete_names
 
+# FAKE GENDER GENERATOR
+
+def fake_gender(n):
+    possible_genders = ["M","F"] # Not a political statement, change as you wish
+    probabilities = [0.5,0.5]
+    genders = np.random.choice(possible_genders,n,p=probabilities)
+    return genders
 # BIRTHDAY GENERATOR
 
 def fake_birth(n):
@@ -78,7 +84,6 @@ def fake_exp(n):
 
 
 
-print(fake_et(30))
 
 
 

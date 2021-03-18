@@ -28,7 +28,8 @@ def fake_birth(n):
 
 def fake_et(n):
     possible_ethnicities = ['Branco','Pardo','Pretos','Amarelos','Indígenas']
-    ethnicity = [possible_ethnicities[np.random.randint(5)] for i in range(n)]
+    ethnicity_index = np.random.choice(5,n,p=[0.427,0.468,0.094,0.006,0.005]) # Choose the chance of each ehtinic group appearing
+    ethnicity = list(map(lambda x : possible_ethnicities[x], ethnicity_index))
     return ethnicity
 
 # OCUPATION GENERATOR
@@ -76,7 +77,7 @@ def fake_exp(n):
 
 
 
-print(fake_add(30))
+print(fake_et(30))
 
 
 

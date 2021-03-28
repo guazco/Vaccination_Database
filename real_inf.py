@@ -1,5 +1,24 @@
 import pandas as pd
-from rand_inf import fake_cpf, fake_oc, fake_names
+import numpy as np
+from datetime import datetime
+from rand_inf import fake_cpf, fake_oc, fake_names, fake_exp, fake_id, fake_street_add
+
+
+# COUNTRY-LAB DICTIONARY
+co_lab_dic = {
+    'AstraZeneca/Oxforc' : "Inglaterra/Suécia",
+    'Sinovac' : "China",
+    'SINOVAC LIFE SCIENCE CO LTD' : "China",
+    'SERUM INSTITUTE OF INDIA LTD' : "India",
+    'BionNTech/Fosun Pharma/Pfizer' : "EUA/Alemanha",
+    'JAnssen-Cilag' : "Bélgica"
+}
+
+# STATUS GENERATOR FUNCTION
+
+def status(x):
+    return "Adquirida" if x else np.random.choice(["Adquirida","Em negociação"],1,p=[0.5,0.5])[2]
+    
 
 def info_municipio(arquivo):
     dados_excel = pd.read_excel(arquivo)
@@ -36,32 +55,34 @@ def vacina_info(df):
     vacina_nome = list(df["vacina_nome"])
     return vacina_codigo, vacina_nome
 
-def laboratorio_info(df):
-    #falta o id
-    #falta o país
-    laboratorio_nome = list(df["vacina_fabricante_nome"])
-    return laboratorio_nome
+def laboratorio_info(df, lab_id):
+    laboratorio_id = lab_id
+    laboratorio_nome = df["vacina_fabricante_nome"].unique().tolist() #pega um de cada
+    laboratorio_pais = [co_lab_dic[i] for i in laboratorio_nome]
+    return laboratorio_id, laboratorio_pais, laboratorio_nome
 
-def dose_info(df):
-    #falta o id da dose
-    dose_lote = list(df["vacina_lote"]) # novo atributo
+def dose_info(df,dose_id):
+    dose_ids = dose_id # novo atributo
     dose_numero = list(df["vacina_descricao_dose"])
-    #falta data de validade
-    #falta status
+    dose_validade = fake_exp(len(dose_ids))
+    data_atual = datetime.today().strftime('%Y-%m-%d') + "T00:00:00.000Z"
+    aplicada = [df["vacina_dataAplicacao"] < data_atual]
+    dose_status = map(status, aplicada)
+    return dose_ids, dose_numero, dose_validade, dose_status
 
 def ubs_info(df):
     # tavez seja interessante mudar o nome dessa entidade
     # pois nem todas as vacinas são aplicas em UBS
     ubs_id = list(df["estabelecimento_valor"])
     ubs_nome = list(df["estalecimento_noFantasia"])
-    # falta ubs_endereco
-    return ubs_id, ubs_nome
+    ubs_end = list(fake_street_add(len(ubs_id)) +  ", " + df['estabelecimento_municipio_nome'])
+    return ubs_id, ubs_nome, ubs_end
 
 
-def produzida_por_info(df):
+def produzida_por_info(df,lab_id):
     vacina_codigo = list(df["vacina_codigo"])
-    #falta o laboratorio_id
-    return vacina_codigo #laboratorio_id
+    laboratorio_id = lab_id
+    return vacina_codigo, laboratorio_id
 
 def habita_em_info(df):
     pessoa_id = list(df["paciente_id"])
@@ -70,9 +91,9 @@ def habita_em_info(df):
     pessoa_municipio = [int(x) for x in list(df["paciente_endereco_coIbgeMunicipio"])]
     return pessoa_id, pessoa_municipio
 
-def aplicada_em_info(df):
+def aplicada_em_info(df, dose_id):
     pessoa_id = list(df["paciente_id"])
-    dose_lote = list(df["vacina_lote"]) #era para ser o dose_id, mas como não tem ainda...
+    dose_lote = dose_id #era para ser o dose_id, mas como não tem ainda...
     pessoa_data_aplicacao = list(df["vacina_dataAplicacao"])
     return pessoa_id, dose_lote, pessoa_data_aplicacao
 
@@ -81,7 +102,20 @@ def fica_no_info(df):
     ubs_municipio = list(df["estabelecimento_municipio_codigo"])
     return ubs_id, ubs_municipio
 
-# def do_tipo_info(df):
-# def enviada_para_info(df):
-# def tem_info(df):
+def do_tipo_info(df, dose_id):
+    dose_ids = dose_id
+    vacina_codigo = list(df["vacina_codigo"])
+    return dose_ids, vacina_codigo
+
+def enviada_para_info(df):
+    vacina_codigo = list(df["vacina_codigo"])
+    ubs_id = list(df["estabelecimento_valor"])
+    return vacina_codigo, ubs_id
+
+def tem_info(df,dose_id):
+    dose_ids = dose_id
+    ubs_id = list(df["estabelecimento_valor"])
+    #quantidade eh melhor ser busca na tabela (count)
+    return dose_ids, ubs_id
+
 

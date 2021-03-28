@@ -68,4 +68,70 @@ class Vacina(Table):
         }
 
 
+class Dose(Table):
+    def fill_table(self, df,dose_id):
+        self.dic = {
+            'IdDose' : dose_info(df,dose_id)[0],
+            'Número' : dose_info(df,dose_id)[1],
+            'Data de Validade' : dose_info(df,dose_id)[2],
+            'Status' : dose_info(df,dose_id)[3]
+        }
 
+class Laboratorio(Table):
+    def fill_table(self, df, lab_id):
+        self.dic = {
+            'IdLaboratorio' : laboratorio_info(df, lab_id)[0],
+            'Pais' : laboratorio_info(df, lab_id)[1],
+            'Nome' : laboratorio_info(df, lab_id)[2]
+        }
+
+
+class Aplicada_Em(Table):
+    def fill_table(self, df, dose_id):
+        self.dic = {
+            'IdPessoa' : aplicada_em_info(df,dose_id)[0],
+            'IdDose' : aplicada_em_info(df,dose_id)[1],
+            'Data' : aplicada_em_info(df,dose_id)[2]
+        }
+        
+class Habita_Em(Table):
+    def fill_table(self, df):
+        self.dic = {
+            'IdPessoa' : habita_em_info(df)[0],
+            'IdMunicipio' : habita_em_info(df)[1]
+        }
+
+class Tem(Table):
+    def fill_table(self, df, dose_id):
+        self.dic = {
+            'IdDose' : tem_info(df, dose_id)[0],
+            'IdUBS' : tem_info(df, dose_id)[1]
+        }
+
+class Fica_No(Table):
+    def fill_table(self, df):
+        self.dic = {
+            'IdUBS' : fica_no_info(df)[0],
+            'IdMunicipio' : fica_no_info(df)[1]
+        } 
+
+class Enviada_Para(Table):
+    def fill_table(self, df):
+        self.dic = {
+            'IdVacina' : enviada_para_info(df)[0],
+            'IdUBS' : enviada_para_info(df)[1]
+        }
+
+class Do_Tipo(Table):
+    def fill_table(self, df,dose_id):
+        self.dic = {
+            'IdDose' : do_tipo_info(df,dose_id)[0],
+            'IdVacina' : do_tipo_info(df,dose_id)[1]
+        }
+        
+class Produzida_Por(Table):
+    def fill_table(self, df,lab_id):
+        self.dic = {
+            'IdVacina' : produzida_por_info(df,lab_id)[0],
+            'IdLaboratorio' : produzida_por_info(df,lab_id)[1]
+        }

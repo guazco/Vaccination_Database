@@ -7,8 +7,6 @@ fake = Faker('pt_BR') # Setting the data language as PT-BR
 """The following process was necessary because running fake.name() 
     would sometimes return Sr. or Dr. before the actual name"""
 
-
-
 # FAKE NAMES 
 
 def fake_names(n):
@@ -77,10 +75,21 @@ def fake_exp(n):
     expiration = [fake.future_date() for i in range(n)]
     return expiration
 
-# CITY NAME GENERATOR
+# UBS ADDRESS GENERATOR
 
+def fake_street_add(n):
+    street_address = [fake.street_address() for i in range(n)]
+    return street_address
 
-# QUANTITY GENERATOR
+# FAKE ID GENERATOR
+
+def fake_id(name, n, k):       #generates a fake id array with the name of the class along with n random numbers or letters with size k
+    signature = str()
+    for i in range(n):
+        signature += str(np.random.choice(["#","?"],1,p=[0.5,0.5]))[2]
+    ids = [fake.bothify(text=(name + "-" + signature)) for i in range(k)]
+    return ids
+
 
 
 

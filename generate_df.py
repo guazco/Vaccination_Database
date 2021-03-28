@@ -85,6 +85,14 @@ class Laboratorio(Table):
             'Nome' : laboratorio_info(df, lab_id)[2]
         }
 
+class Unidade_Saude(Table):
+    def fill_table(self, df):
+        self.dic = {
+            'IdUS' : unidade_saude_info(df)[0],
+            'Nome' : unidade_saude_info(df)[1],
+            'Endereco' : unidade_saude_info(df)[2]
+        }
+
 
 class Aplicada_Em(Table):
     def fill_table(self, df, dose_id):

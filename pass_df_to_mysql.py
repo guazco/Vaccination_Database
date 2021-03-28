@@ -44,6 +44,13 @@ vacina.fill_table(df_other_info)
 vacina.create_df()
 df_vacina = vacina.out_df()
 
+#cria laboratório
+print("Gerando DataFrame Laboratorio")
+laboratorio = Laboratorio("Laboratorio")
+laboratorio.fill_table(df_other_info,lab_id)
+laboratorio.create_df()
+df_laboratorio = laboratorio.out_df()
+
 #cria dose
 print("Gerando DataFrame Dose")
 dose = Dose("Dose")
@@ -51,12 +58,12 @@ dose.fill_table(df_other_info,dose_id)
 dose.create_df()
 df_dose = dose.out_df()
 
-#cria laboratório
-print("Gerando DataFrame Laboratorio")
-laboratorio = Laboratorio("Laboratorio")
-laboratorio.fill_table(df_other_info,lab_id)
-laboratorio.create_df()
-df_laboratorio = laboratorio.out_df()
+#cria Unidade Saúde
+print("Gerando DataFrame Unidade Saude")
+unidade_saude = Unidade_Saude("Unidade_Saude")
+unidade_saude.fill_table(df_other_info)
+unidade_saude.create_df()
+df_unidade_saude = unidade_saude.out_df()
 
 #cria aplica em
 print("Gerando DataFrame Aplica_Em")
@@ -143,6 +150,10 @@ print("Tabela Vacinas criada")
 print("Criando tabela Dose")
 df_dose.to_sql('doses', engine, index=False)
 print("Tabela Doses criada")
+
+print("Criando tabela Unidade Saude")
+df_unidade_saude.to_sql('Unidade Saude', engine, index=False)
+print("Tabela Unidade Saude criada")
 
 print("Criando tabela Laboratorio")
 df_laboratorio.to_sql('laboratorio', engine, index=False)

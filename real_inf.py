@@ -70,13 +70,13 @@ def dose_info(df,dose_id):
     dose_status = map(status, aplicada)
     return dose_ids, dose_numero, dose_validade, dose_status
 
-def ubs_info(df):
+def unidade_saude_info(df):
     # tavez seja interessante mudar o nome dessa entidade
     # pois nem todas as vacinas são aplicas em UBS
-    ubs_id = list(df["estabelecimento_valor"])
-    ubs_nome = list(df["estalecimento_noFantasia"])
-    ubs_end = list(fake_street_add(len(ubs_id)) +  ", " + df['estabelecimento_municipio_nome'])
-    return ubs_id, ubs_nome, ubs_end
+    us_id = list(df["estabelecimento_valor"])
+    us_nome = list(df["estalecimento_noFantasia"])
+    us_end = list(fake_street_add(len(us_id)) +  ", " + df['estabelecimento_municipio_nome'])
+    return us_id, us_nome, us_end
 
 
 def produzida_por_info(df,lab_id):

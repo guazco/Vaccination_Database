@@ -18,6 +18,7 @@ municipio.create_df()
 df_municipio = municipio.out_df()
 # removendo último digito do código do municipio
 df_municipio = df_municipio.astype({"Código" : str})
+df_municipio['Código'] = df_municipio['Código'].str[:-3]
 # ---------------------------------------------------------
 df_municipio = df_municipio.drop(df_municipio.loc[645:659].index).astype({"Código" : int}) # para remover o rodapé como "notas" e converter o código para inteiro
 

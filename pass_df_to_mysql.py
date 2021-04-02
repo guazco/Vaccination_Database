@@ -3,14 +3,6 @@ import real_inf
 from sqlalchemy import create_engine
 import pymysql
 
-"""
-#cria pessoa fake
-pessoa = Pessoa("Pessoa")
-pessoa.fill_table(30)
-pessoa.create_df()
-df = pessoa.out_df()
-"""
-
 #cria município
 print("Lendo arquivo de municípios")
 arquivo = 'c3d64a3788342bbdd97d01ef7694f1a0.xlsx'
@@ -20,7 +12,6 @@ municipio.create_df()
 df_municipio = municipio.out_df()
 # removendo último digito do código do municipio
 df_municipio = df_municipio.astype({"Código" : str})
-df_municipio['Código'] = df_municipio['Código'].str[:-3]
 # -------------------------------------------------------------
 df_municipio = df_municipio.drop(df_municipio.loc[645:659].index).astype({"Código" : int}) # para remover o rodapé como "notas" e converter o código para inteiro
 
@@ -35,6 +26,7 @@ df_other_info = df_other_info.loc[df_other_info['paciente_endereco_coIbgeMunicip
 
 dose_id = fake_id("dose",10,len(df_other_info["vacina_lote"]))
 lab_id = fake_id("lab",5,len(df_other_info["vacina_fabricante_nome"].unique().tolist()))
+lab_vac_id = fake_id("lab",5,len(df_other_info["vacina_fabricante_nome"].tolist()))
 
 #cria pessoa
 print("Gerando DataFrame Pessoa")
@@ -116,15 +108,15 @@ df_do_tipo = do_tipo.out_df()
 #cria porduzida por
 print("Gerando DataFrame Produzida_Por")
 produzida_por = Produzida_Por("Produzida_Por")
-produzida_por.fill_table(df_other_info, lab_id)
+produzida_por.fill_table(df_other_info, lab_vac_id)
 produzida_por.create_df()
 df_produzida_por = produzida_por.out_df()
 
-# Credentials to database connection
-hostname="localhost"
-dbname="teste"
-username="seu user"
-pwd="sua senha"
+# Credentials to database connection ADD
+hostname=""
+dbname=""
+username=""
+pwd=""
 
 connection = pymysql.connect(
     host=hostname,

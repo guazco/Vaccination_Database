@@ -65,7 +65,8 @@ def unidade_saude_info(df):
     # pois nem todas as vacinas são aplicas em UBS
     us_id = list(df["estabelecimento_valor"])
     us_nome = list(df["estalecimento_noFantasia"])
-    us_end = list(fake_street_add(len(us_id)) +  ", " + df['estabelecimento_municipio_nome'])
+    #us_end = list(str(fake_street_add(len(us_id))) +  ", " + str(df['estabelecimento_municipio_nome']))
+    us_end = [str(j) + ", " + str(df['estabelecimento_municipio_nome'].iloc[i])  for i,j in enumerate(fake_street_add(len(us_id)))]
     return us_id, us_nome, us_end
 
 def produzida_por_info(df,lab_id):

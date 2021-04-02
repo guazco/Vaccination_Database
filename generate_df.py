@@ -4,8 +4,6 @@ from real_inf import *
 
 """File to test creating a single table"""
 
-n = 30 # number of elements on pessoa table
-
 class Table:
     def __init__(self, name, dic={}, df=pd.DataFrame()):
         self.name = name
@@ -20,19 +18,6 @@ class Table:
 
     def out_df(self):
         return self.df
-
-""" PESSOAS FAKE
-class Pessoa(Table):
-    def fill_table(self, n):
-        self.dic = {
-            'CPF' : fake_cpf(n),
-            'Nome' : fake_names(n),
-            'Data de Nacimento' : fake_birth(n),
-            'Gênero' : fake_gender(n),
-            'Etnia' : fake_et(n),
-            'Ocupação' : fake_oc(n)
-        }
-"""
 
 class Pessoa(Table):
     def fill_table(self, df):

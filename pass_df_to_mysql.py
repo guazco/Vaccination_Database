@@ -1,6 +1,5 @@
 from generate_df import *
 import real_inf
-import mysql.connector as sql
 from sqlalchemy import create_engine
 import pymysql
 
@@ -19,11 +18,18 @@ municipio = Municipio("Município")
 municipio.fill_table(arquivo)
 municipio.create_df()
 df_municipio = municipio.out_df()
+# removendo último digito do código do municipio
+df_municipio = df_municipio.astype({"Código" : str})
+df_municipio['Código'] = df_municipio['Código'].str[:-3]
+# -------------------------------------------------------------
+df_municipio = df_municipio.drop(df_municipio.loc[645:659].index).astype({"Código" : int}) # para remover o rodapé como "notas" e converter o código para inteiro
 
 #cria o resto daqui pra baixo
 print("Lendo arquivo com outros dados")
 arquivo_2 = 'part-00000-9cca567b-94bf-4d83-88ae-c2efe6fb4794.c000.csv'
 df_other_info = other_info(arquivo_2)
+df_other_info = df_other_info.drop(['vacina_fabricante_referencia', 'paciente_endereco_cep'], axis=1) # removendo colunas com muitos vazios
+df_other_info = df_other_info.loc[df_other_info['paciente_endereco_coIbgeMunicipio'].notnull()].astype({"paciente_endereco_coIbgeMunicipio" : int}) # converte o código de cidade para inteiro
 
 # GENERATING IDS
 

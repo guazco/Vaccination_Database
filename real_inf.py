@@ -5,12 +5,12 @@ from rand_inf import fake_cpf, fake_oc, fake_names, fake_exp, fake_id, fake_stre
 
 # COUNTRY-LAB DICTIONARY
 co_lab_dic = {
-    'AstraZeneca/Oxforc' : "Inglaterra/Suécia",
+    'AstraZeneca/Oxford' : "Inglaterra/Suécia",
     'Sinovac' : "China",
     'SINOVAC LIFE SCIENCE CO LTD' : "China",
     'SERUM INSTITUTE OF INDIA LTD' : "India",
-    'BionNTech/Fosun Pharma/Pfizer' : "EUA/Alemanha",
-    'JAnssen-Cilag' : "Bélgica"
+    'BioNTech/Fosun Pharma/Pfizer' : "EUA/Alemanha",
+    'Janssen-Cilag' : "Bélgica"
 }
 
 def info_municipio(arquivo):

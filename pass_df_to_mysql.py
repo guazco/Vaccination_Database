@@ -1,3 +1,9 @@
+##############################################################
+# File      :   pass_df_to_mysql.py
+# Project   :   PCS3623 - Banco de Dados I
+# Date      :   April/2021
+##############################################################
+
 from generate_df import *
 import real_inf
 from sqlalchemy import create_engine
@@ -12,7 +18,7 @@ municipio.create_df()
 df_municipio = municipio.out_df()
 # removendo último digito do código do municipio
 df_municipio = df_municipio.astype({"Código" : str})
-# -------------------------------------------------------------
+# ---------------------------------------------------------
 df_municipio = df_municipio.drop(df_municipio.loc[645:659].index).astype({"Código" : int}) # para remover o rodapé como "notas" e converter o código para inteiro
 
 #cria o resto daqui pra baixo

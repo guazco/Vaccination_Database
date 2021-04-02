@@ -1,8 +1,14 @@
+##############################################################
+# File      :   generate_df.py
+# Project   :   PCS3623 - Banco de Dados I
+# Date      :   April/2021
+##############################################################
+
 import pandas as pd
 from rand_inf import *
 from real_inf import *
 
-"""File to test creating a single table"""
+"""File to create tables"""
 
 class Table:
     def __init__(self, name, dic={}, df=pd.DataFrame()):

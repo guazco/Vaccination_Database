@@ -1,3 +1,9 @@
+##############################################################
+# File      :   rand_inf.py
+# Project   :   PCS3623 - Banco de Dados I
+# Date      :   April/2021
+##############################################################
+
 import numpy as np
 from faker import Faker
 from random import *

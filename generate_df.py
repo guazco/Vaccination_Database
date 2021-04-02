@@ -36,104 +36,117 @@ class Pessoa(Table):
 
 class Pessoa(Table):
     def fill_table(self, df):
+        vetor_pessoa_info = pessoa_info(df)
         self.dic = {
-            'Id' : pessoa_info(df)[0],
-            'CPF' : pessoa_info(df)[1],
-            'Nome' : pessoa_info(df)[2],
-            'Gênero': pessoa_info(df)[3],
-            'Idade' : pessoa_info(df)[4],
-            'Data_de_Nacimento' : pessoa_info(df)[5],
-            'Etnia_código' : pessoa_info(df)[6],
-            'Etnia': pessoa_info(df)[7],
-            'Ocupação' : pessoa_info(df)[8],
-            'Grupo': pessoa_info(df)[9]
+            'Id' : vetor_pessoa_info[0],
+            'CPF' : vetor_pessoa_info[1],
+            'Nome' : vetor_pessoa_info[2],
+            'Gênero': vetor_pessoa_info[3],
+            'Idade' : vetor_pessoa_info[4],
+            'Data_de_Nacimento' : vetor_pessoa_info[5],
+            'Etnia_código' : vetor_pessoa_info[6],
+            'Etnia': vetor_pessoa_info[7],
+            'Ocupação' : vetor_pessoa_info[8],
+            'Grupo': vetor_pessoa_info[9]
         }
 
 class Municipio(Table):
     def fill_table(self, arquivo):
+        vetor_info_municipio = info_municipio(arquivo)
         self.dic = {
-            'Código' : info_municipio(arquivo)[1],
-            'Nome' : info_municipio(arquivo)[0],
-            'População' : info_municipio(arquivo)[2]
+            'Código' : vetor_info_municipio[1],
+            'Nome' : vetor_info_municipio[0],
+            'População' : vetor_info_municipio[2]
         }
 
 class Vacina(Table):
     def fill_table(self, df):
+        vetor_vacina_info = vacina_info(df)
         self.dic = {
-            'IdVacina' : vacina_info(df)[0],
-            'Nome' : vacina_info(df)[1]
+            'IdVacina' : vetor_vacina_info[0],
+            'Nome' : vetor_vacina_info[1]
         }
 
 class Dose(Table):
     def fill_table(self, df,dose_id):
+        vetor_dose_info = dose_info(df,dose_id)
         self.dic = {
-            'IdDose' : dose_info(df,dose_id)[0],
-            'Número' : dose_info(df,dose_id)[1],
-            'Data de Validade' : dose_info(df,dose_id)[2]
+            'IdDose' : vetor_dose_info[0],
+            'Número' : vetor_dose_info[1],
+            'Data de Validade' : vetor_dose_info[2]
         }
 
 class Laboratorio(Table):
     def fill_table(self, df, lab_id):
+        vetor_laboratorio_info = laboratorio_info(df, lab_id)
         self.dic = {
-            'IdLaboratorio' : laboratorio_info(df, lab_id)[0],
-            'Pais' : laboratorio_info(df, lab_id)[1],
-            'Nome' : laboratorio_info(df, lab_id)[2]
+            'IdLaboratorio' : vetor_laboratorio_info[0],
+            'Pais' : vetor_laboratorio_info[1],
+            'Nome' : vetor_laboratorio_info[2]
         }
 
 class Unidade_Saude(Table):
     def fill_table(self, df):
+        vetor_unidade_saude_info = unidade_saude_info(df)
         self.dic = {
-            'IdUS' : unidade_saude_info(df)[0],
-            'Nome' : unidade_saude_info(df)[1],
-            'Endereco' : unidade_saude_info(df)[2]
+            'IdUS' : vetor_unidade_saude_info[0],
+            'Nome' : vetor_unidade_saude_info[1],
+            'Endereco' : vetor_unidade_saude_info[2]
         }
 
 class Aplicada_Em(Table):
     def fill_table(self, df, dose_id):
+        vetor_aplicada_em_info = aplicada_em_info(df,dose_id)
         self.dic = {
-            'IdPessoa' : aplicada_em_info(df,dose_id)[0],
-            'IdDose' : aplicada_em_info(df,dose_id)[1],
-            'Data' : aplicada_em_info(df,dose_id)[2]
+            'IdPessoa' : vetor_aplicada_em_info[0],
+            'IdDose' : vetor_aplicada_em_info[1],
+            'Data' : vetor_aplicada_em_info[2]
         }
         
 class Habita_Em(Table):
     def fill_table(self, df):
+        vetor_habita_em_info = habita_em_info(df)
         self.dic = {
-            'IdPessoa' : habita_em_info(df)[0],
-            'IdMunicipio' : habita_em_info(df)[1]
+            'IdPessoa' : vetor_habita_em_info [0],
+            'IdMunicipio' : vetor_habita_em_info [1]
         }
 
 class Tem(Table):
     def fill_table(self, df, dose_id):
+        vetor_tem_info = tem_info(df, dose_id)
         self.dic = {
-            'IdDose' : tem_info(df, dose_id)[0],
-            'IdUBS' : tem_info(df, dose_id)[1]
+            'IdDose' : vetor_tem_info[0],
+            'IdUBS' : vetor_tem_info[1]
         }
 
 class Fica_No(Table):
     def fill_table(self, df):
+        vetor_fica_no_info = fica_no_info(df)
         self.dic = {
-            'IdUBS' : fica_no_info(df)[0],
-            'IdMunicipio' : fica_no_info(df)[1]
+            'IdUBS' : vetor_fica_no_info[0],
+            'IdMunicipio' : vetor_fica_no_info[1]
         } 
 
 class Enviada_Para(Table):
     def fill_table(self, df):
+        vetor_enviada_para_info = enviada_para_info(df)
         self.dic = {
-            'IdVacina' : enviada_para_info(df)[0],
-            'IdUBS' : enviada_para_info(df)[1]
+            'IdVacina' : vetor_enviada_para_info[0],
+            'IdUBS' : vetor_enviada_para_info[1]
         }
 
 class Do_Tipo(Table):
     def fill_table(self, df,dose_id):
+        vetor_do_tipo_info = do_tipo_info(df,dose_id)
         self.dic = {
-            'IdDose' : do_tipo_info(df,dose_id)[0],
-            'IdVacina' : do_tipo_info(df,dose_id)[1]
+            'IdDose' : vetor_do_tipo_info[0],
+            'IdVacina' : vetor_do_tipo_info[1]
         }
         
 class Produzida_Por(Table):
     def fill_table(self, df,lab_id):
+        vetor_produzida_por_info = produzida_por_info(df,lab_id)
         self.dic = {
-            'IdVacina' : produzida_por_info(df,lab_id)[0],
-            'IdLaboratorio' : produzida_por_info(df,lab_id)[1]
+            'IdVacina' : vetor_produzida_por_info[0],
+            'IdLaboratorio' : vetor_produzida_por_info[1]
         }

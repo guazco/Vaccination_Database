@@ -6,8 +6,6 @@ from real_inf import *
 
 n = 30 # number of elements on pessoa table
 
-
-
 class Table:
     def __init__(self, name, dic={}, df=pd.DataFrame()):
         self.name = name
@@ -22,7 +20,6 @@ class Table:
 
     def out_df(self):
         return self.df
-
 
 """ PESSOAS FAKE
 class Pessoa(Table):
@@ -67,14 +64,12 @@ class Vacina(Table):
             'Nome' : vacina_info(df)[1]
         }
 
-
 class Dose(Table):
     def fill_table(self, df,dose_id):
         self.dic = {
             'IdDose' : dose_info(df,dose_id)[0],
             'Número' : dose_info(df,dose_id)[1],
-            'Data de Validade' : dose_info(df,dose_id)[2],
-            'Status' : dose_info(df,dose_id)[3]
+            'Data de Validade' : dose_info(df,dose_id)[2]
         }
 
 class Laboratorio(Table):
@@ -92,7 +87,6 @@ class Unidade_Saude(Table):
             'Nome' : unidade_saude_info(df)[1],
             'Endereco' : unidade_saude_info(df)[2]
         }
-
 
 class Aplicada_Em(Table):
     def fill_table(self, df, dose_id):

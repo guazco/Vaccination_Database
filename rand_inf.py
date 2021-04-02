@@ -89,10 +89,3 @@ def fake_id(name, n, k):       #generates a fake id array with the name of the c
         signature += str(np.random.choice(["#","?"],1,p=[0.5,0.5]))[2]
     ids = [fake.bothify(text=(name + "-" + signature)) for i in range(k)]
     return ids
-
-
-
-
-
-
-

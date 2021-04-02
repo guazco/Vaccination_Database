@@ -114,14 +114,11 @@ produzida_por.fill_table(df_other_info, lab_id)
 produzida_por.create_df()
 df_produzida_por = produzida_por.out_df()
 
-
-
 # Credentials to database connection
 hostname="localhost"
 dbname="teste"
 username="seu user"
 pwd="sua senha"
-
 
 connection = pymysql.connect(
     host=hostname,
@@ -195,7 +192,6 @@ connection = pymysql.connect(
 cursor = connection.cursor()
 
 cursor.execute("SELECT * FROM municipios")
-
 
 for x in cursor:
     print(x)

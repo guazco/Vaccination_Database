@@ -3,7 +3,6 @@ import numpy as np
 from datetime import datetime
 from rand_inf import fake_cpf, fake_oc, fake_names, fake_exp, fake_id, fake_street_add
 
-
 # COUNTRY-LAB DICTIONARY
 co_lab_dic = {
     'AstraZeneca/Oxforc' : "Inglaterra/Suécia",
@@ -13,12 +12,6 @@ co_lab_dic = {
     'BionNTech/Fosun Pharma/Pfizer' : "EUA/Alemanha",
     'JAnssen-Cilag' : "Bélgica"
 }
-
-# STATUS GENERATOR FUNCTION
-
-def status(x):
-    return "Adquirida" if x else np.random.choice(["Adquirida","Em negociação"],1,p=[0.5,0.5])[2]
-    
 
 def info_municipio(arquivo):
     dados_excel = pd.read_excel(arquivo)
@@ -65,10 +58,7 @@ def dose_info(df,dose_id):
     dose_ids = dose_id # novo atributo
     dose_numero = list(df["vacina_descricao_dose"])
     dose_validade = fake_exp(len(dose_ids))
-    data_atual = datetime.today().strftime('%Y-%m-%d') + "T00:00:00.000Z"
-    aplicada = [df["vacina_dataAplicacao"] < data_atual]
-    dose_status = map(status, aplicada)
-    return dose_ids, dose_numero, dose_validade, dose_status
+    return dose_ids, dose_numero, dose_validade
 
 def unidade_saude_info(df):
     # tavez seja interessante mudar o nome dessa entidade
@@ -77,7 +67,6 @@ def unidade_saude_info(df):
     us_nome = list(df["estalecimento_noFantasia"])
     us_end = list(fake_street_add(len(us_id)) +  ", " + df['estabelecimento_municipio_nome'])
     return us_id, us_nome, us_end
-
 
 def produzida_por_info(df,lab_id):
     vacina_codigo = list(df["vacina_codigo"])
@@ -117,5 +106,3 @@ def tem_info(df,dose_id):
     ubs_id = list(df["estabelecimento_valor"])
     #quantidade eh melhor ser busca na tabela (count)
     return dose_ids, ubs_id
-
-

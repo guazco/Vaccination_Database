@@ -4,6 +4,7 @@
 # Date      :   April/2021
 ##############################################################
 
+import sqlalchemy
 from generate_df import *
 import real_inf
 from sqlalchemy import create_engine
@@ -120,10 +121,10 @@ produzida_por.create_df()
 df_produzida_por = produzida_por.out_df()
 
 # Credentials to database connection ADD
-hostname=""
-dbname=""
-username=""
-pwd=""
+hostname="localhost"
+dbname="teste"
+username="enzo"
+pwd="password"
 
 connection = pymysql.connect(
     host=hostname,
@@ -138,7 +139,16 @@ engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}"
 
 # Convert dataframe to sql table
 print("Criando tabela Pessoa")
-df_pessoa.to_sql('pessoas', engine, index=False)
+df_pessoa.to_sql('pessoas', engine, index=False,
+            dtype={
+                'Id' : sqlalchemy.types.VARCHAR(length=64),
+                'CPF' : sqlalchemy.types.BIGINT,
+                'Gênero' : sqlalchemy.types.VARCHAR(length=1),
+                'Idade' : sqlalchemy.types.SMALLINT,
+                'Data_de_Nascimento' : sqlalchemy.types.DATE,
+                'Etnia_código' : sqlalchemy.types.SMALLINT,
+
+            })
 print("Tabela Pessoa criada")
 
 print("Criando tabela Município")
@@ -189,7 +199,7 @@ print("Criando tabela Produzida_Por")
 df_produzida_por.to_sql('Produzida_Por', engine, index=False)
 print("Produzida_Por criada")
 
-connection = pymysql.connect(
+"""connection = pymysql.connect(
     host=hostname,
     user=username,
     password=pwd,
@@ -199,4 +209,4 @@ cursor = connection.cursor()
 cursor.execute("SELECT * FROM municipios")
 
 for x in cursor:
-    print(x)
+    print(x)"""

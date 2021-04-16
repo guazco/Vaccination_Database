@@ -34,7 +34,7 @@ class Pessoa(Table):
             'Nome' : vetor_pessoa_info[2],
             'Gênero': vetor_pessoa_info[3],
             'Idade' : vetor_pessoa_info[4],
-            'Data_de_Nacimento' : vetor_pessoa_info[5],
+            'Data_de_Nascimento' : vetor_pessoa_info[5],
             'Etnia_código' : vetor_pessoa_info[6],
             'Etnia': vetor_pessoa_info[7],
             'Ocupação' : vetor_pessoa_info[8],
@@ -80,7 +80,7 @@ class Unidade_Saude(Table):
     def fill_table(self, df):
         vetor_unidade_saude_info = unidade_saude_info(df)
         self.dic = {
-            'IdUS' : vetor_unidade_saude_info[0],
+            'IdUBS' : vetor_unidade_saude_info[0],
             'Nome' : vetor_unidade_saude_info[1],
             'Endereco' : vetor_unidade_saude_info[2]
         }

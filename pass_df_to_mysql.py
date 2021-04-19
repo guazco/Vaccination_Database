@@ -1,14 +1,10 @@
-##############################################################
-# File      :   pass_df_to_mysql.py
-# Project   :   PCS3623 - Banco de Dados I
-# Date      :   April/2021
-##############################################################
-
 import sqlalchemy
 from generate_df import *
 import real_inf
 from sqlalchemy import create_engine
 import pymysql
+import pandas as pd
+
 
 #cria município
 print("Lendo arquivo de municípios")
@@ -22,6 +18,7 @@ df_municipio = df_municipio.astype({"Código" : str})
 df_municipio['Código'] = df_municipio['Código'].str[:-3]
 # ---------------------------------------------------------
 df_municipio = df_municipio.drop(df_municipio.loc[645:659].index).astype({"Código" : int}) # para remover o rodapé como "notas" e converter o código para inteiro
+
 
 #cria o resto daqui pra baixo
 print("Lendo arquivo com outros dados")
@@ -41,12 +38,14 @@ dose_id = fake_id("dose",10,len(df_other_info["vacina_lote"]))
 lab_id = fake_id("lab",5,len(df_other_info["vacina_fabricante_nome"].unique().tolist()))
 lab_vac_id = fake_id("lab",5,len(df_other_info["vacina_fabricante_nome"].tolist()))
 
-#cria pessoa
+
+# cria pessoa
 print("Gerando DataFrame Pessoa")
 pessoa = Pessoa("Pessoa")
 pessoa.fill_table(df_other_info)
 pessoa.create_df()
 df_pessoa = pessoa.out_df()
+df_pessoa = df_pessoa.drop_duplicates(keep='first', subset=['Id'])
 
 #cria vacina
 print("Gerando DataFrame Vacina")
@@ -54,6 +53,7 @@ vacina = Vacina("Vacina")
 vacina.fill_table(df_other_info)
 vacina.create_df()
 df_vacina = vacina.out_df()
+df_vacina = df_vacina.drop_duplicates(keep='first', subset=['IdVacina'])
 
 #cria laboratório
 print("Gerando DataFrame Laboratorio")
@@ -68,6 +68,8 @@ dose = Dose("Dose")
 dose.fill_table(df_other_info,dose_id)
 dose.create_df()
 df_dose = dose.out_df()
+df_dose.loc[:, 'IdDose'] = df_dose['IdDose'].str.lower()
+df_dose = df_dose.drop_duplicates(keep='first', subset=['IdDose'])
 
 #cria Unidade Saúde
 print("Gerando DataFrame Unidade Saude")
@@ -75,6 +77,7 @@ unidade_saude = Unidade_Saude("Unidade_Saude")
 unidade_saude.fill_table(df_other_info)
 unidade_saude.create_df()
 df_unidade_saude = unidade_saude.out_df()
+df_unidade_saude = df_unidade_saude.drop_duplicates(keep='first', subset=['IdUBS'])
 
 #cria aplica em
 print("Gerando DataFrame Aplica_Em")
@@ -82,6 +85,7 @@ aplicada_em = Aplicada_Em("Aplica_Em")
 aplicada_em.fill_table(df_other_info,dose_id)
 aplicada_em.create_df()
 df_aplicada_em = aplicada_em.out_df()
+df_aplicada_em.loc[:, 'IdDose'] = df_aplicada_em['IdDose'].str.lower()
 
 #cria habita em
 print("Gerando DataFrame Habita_Em")
@@ -117,6 +121,7 @@ do_tipo = Do_Tipo("Do_Tipo")
 do_tipo.fill_table(df_other_info, dose_id)
 do_tipo.create_df()
 df_do_tipo = do_tipo.out_df()
+df_do_tipo.loc[:, 'IdDose'] = df_do_tipo['IdDose'].str.lower()
 
 #cria porduzida por
 print("Gerando DataFrame Produzida_Por")
@@ -262,14 +267,78 @@ df_produzida_por.to_sql('Produzida_Por', engine, index=False,
                        })
 print("Produzida_Por criada")
 
-"""connection = pymysql.connect(
-    host=hostname,
-    user=username,
-    password=pwd,
-    db=dbname)
-cursor = connection.cursor()
 
-cursor.execute("SELECT * FROM municipios")
 
-for x in cursor:
-    print(x)"""
+# Definindo primary key
+print('Criando PK de doses')
+cursor.execute("ALTER TABLE doses ADD PRIMARY KEY (IdDose)")
+print('PK de doses criada.\n')
+
+print('Criando PK de laboratorio')
+cursor.execute("ALTER TABLE laboratorio ADD PRIMARY KEY (IdLaboratorio)")
+print('PK de laboratorio criada.\n')
+
+print('Criando PK de municipios')
+cursor.execute("ALTER TABLE municipios ADD PRIMARY KEY (Código)")
+print('PK de municipios criada.\n')
+
+print('Crianda PK de pessoas')
+cursor.execute("ALTER TABLE pessoas ADD PRIMARY KEY (Id)")
+print('PK de pessoas criada.\n')
+
+print('Crianda PK de unidade saude')
+cursor.execute('ALTER TABLE `unidade saude` ADD PRIMARY KEY (IdUBS)')
+print('PK de unidade saude criada.\n')
+
+print('criando PK de vacinas')
+cursor.execute('ALTER TABLE `vacinas` ADD PRIMARY KEY (IdVacina)')
+print('PK de vacinas criada.\n')
+
+
+# Defigindo foreign key
+cursor.execute('SET GLOBAL FOREIGN_KEY_CHECKS=0') # desativa conferencia das FK s para rodar mais rápido (correndo risco de ter inconsistência nos dados)
+
+print('Criando FK s de do_tipo')
+cursor.execute('ALTER TABLE do_tipo ADD FOREIGN KEY (IdDose) REFERENCES doses(IdDose)')
+cursor.execute('ALTER TABLE do_tipo ADD FOREIGN KEY (IdVacina) REFERENCES vacinas(IdVacina)')
+print('FK s de do_tipo criadas.\n')
+
+
+print('Criando FK s de enviada_para')
+cursor.execute('ALTER TABLE enviada_para ADD FOREIGN KEY (IdVacina) REFERENCES vacinas(IdVacina)')
+cursor.execute('ALTER TABLE enviada_para ADD FOREIGN KEY (IdUBS) REFERENCES `unidade saude`(IdUBS)')
+print('FK s de enviada_para criadas.\n')
+
+
+print('Criando FK s de fica_no')
+cursor.execute('ALTER TABLE fica_no ADD FOREIGN KEY (IdUBS) REFERENCES `unidade saude`(IdUBS)')
+cursor.execute('ALTER TABLE fica_no ADD FOREIGN KEY (IdMunicipio) REFERENCES municipios(Código)')
+print('FK s de fica_no criadas.\n')
+
+
+print('Criando FK s de habita_em')
+cursor.execute('ALTER TABLE habita_em ADD FOREIGN KEY (IdPessoa) REFERENCES pessoas(Id)')
+cursor.execute('ALTER TABLE habita_em ADD FOREIGN KEY (IdMunicipio) REFERENCES municipios(Código)')
+print('FK s de habita_em criadas.\n')
+
+
+print('Criando FK s de produzido_por')
+cursor.execute('ALTER TABLE produzida_por ADD FOREIGN KEY (IdVacina) REFERENCES vacinas(IdVacina)')
+cursor.execute('ALTER TABLE produzida_por ADD FOREIGN KEY (IdLaboratorio) REFERENCES laboratorio(IdLaboratorio)')
+print('FK s de produzido_por criadas.\n')
+
+
+print('Criando FK s de tem')
+cursor.execute('ALTER TABLE tem ADD FOREIGN KEY (IdDose) REFERENCES doses(IdDose)')
+cursor.execute('ALTER TABLE tem ADD FOREIGN KEY (IdUBS) REFERENCES `unidade saude`(IdUBS)')
+print('FK s de tem criadas.\n')
+
+
+print('Criando FK s de aplicada_em')
+cursor.execute('ALTER TABLE aplicada_em ADD FOREIGN KEY (IdPessoa) REFERENCES pessoas(Id)')
+cursor.execute('ALTER TABLE aplicada_em ADD FOREIGN KEY (IdDose) REFERENCES doses(IdDose)')
+print('FK s de aplicada_em criadas.\n\n')
+
+
+cursor.execute('SET GLOBAL FOREIGN_KEY_CHECKS=1')
+print('\nFim da execução.')

@@ -131,10 +131,10 @@ produzida_por.create_df()
 df_produzida_por = produzida_por.out_df()
 
 # Credentials to database connection ADD
-hostname=""
-dbname=""
-username=""
-pwd=""
+hostname="root"
+dbname="vaccine"
+username="root"
+pwd="M@rvin42"
 
 connection = pymysql.connect(
     host=hostname,

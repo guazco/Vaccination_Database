@@ -75,9 +75,19 @@ def unidade_saude_info(df):
     us_end = [str(j) + ", " + str(df['estabelecimento_municipio_nome'].iloc[i])  for i,j in enumerate(fake_street_add(len(us_id)))]
     return us_id, us_nome, us_end
 
+
+produzida_por_dic = {
+    "85" : "2",
+    "86"   : "4",
+    "87"   : "1",
+    "88"   : "5"
+}
+
+
+
 def produzida_por_info(df,lab_id):
     vacina_codigo = list(df["vacina_codigo"])
-    laboratorio_id = lab_id
+    laboratorio_id = [labid[int(produzida_por_dic(str(i)))] for i in vacina_codigo]
     return vacina_codigo, laboratorio_id
 
 def habita_em_info(df):

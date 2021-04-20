@@ -36,7 +36,7 @@ df_other_info['vacina_dataAplicacao'] = df_other_info['vacina_dataAplicacao'].st
 
 dose_id = fake_id("dose",10,len(df_other_info["vacina_lote"]))
 lab_id = fake_id("lab",5,len(df_other_info["vacina_fabricante_nome"].unique().tolist()))
-lab_vac_id = fake_id("lab",5,len(df_other_info["vacina_fabricante_nome"].tolist()))
+lab_vac_id = lab_id
 
 
 # cria pessoa
@@ -131,10 +131,10 @@ produzida_por.create_df()
 df_produzida_por = produzida_por.out_df()
 
 # Credentials to database connection ADD
-hostname="root"
-dbname="vaccine"
-username="root"
-pwd="M@rvin42"
+hostname=""
+dbname=""
+username=""
+pwd=""
 
 connection = pymysql.connect(
     host=hostname,

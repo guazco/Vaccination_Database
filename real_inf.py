@@ -77,9 +77,9 @@ def unidade_saude_info(df):
 
 
 produzida_por_dic = {
-    "85" : "2",
-    "86"   : "4",
-    "87"   : "1",
+    "85" : "0",
+    "86"   : "1",
+    "87"   : "4",
     "88"   : "5"
 }
 
@@ -87,7 +87,7 @@ produzida_por_dic = {
 
 def produzida_por_info(df,lab_id):
     vacina_codigo = list(df["vacina_codigo"])
-    laboratorio_id = [labid[int(produzida_por_dic(str(i)))] for i in vacina_codigo]
+    laboratorio_id = [lab_id[int(produzida_por_dic[str(i)])] for i in vacina_codigo]
     return vacina_codigo, laboratorio_id
 
 def habita_em_info(df):

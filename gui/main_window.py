@@ -105,7 +105,7 @@ class Dialog(QtWidgets.QDialog):
 
     def fav_search(self):
         quer_dic = {
-        "Doses distribuídas para cada município" : "SELECT m.Nome, count(d.IdDose) FROM vacinas_db.municipios m, vacinas_db.unidade_saude u, vacinas_db.tem t, vacinas_db.doses d, vacinas_db.fica_no f WHERE m.Código=f.IdMunicipio AND f.IdUBS=u.IdUS AND u.IdUS=t.IdUBS AND t.IdDose=d.IdDose GROUP BY m.Nome;","Doses em negociação de cada tipo de vacina" : "SELECT v.Nome, count(d.IdDose) FROM Dose.d, Do_tipo t, Vacina v WHERE d.IdDose=t.IdDose AND t.IdVacina=v.IdVacina AND d.Status=”Em negociação” GROUP BY v.Nome;",
+        "Doses distribuídas para cada município" : "SELECT m.Nome, count(d.IdDose) FROM vacinas_db.municipios m, vacinas_db.unidade_saude u, vacinas_db.tem t, vacinas_db.doses d, vacinas_db.fica_no f WHERE m.Código=f.IdMunicipio AND f.IdUBS=u.IdUS AND u.IdUS=t.IdUBS AND t.IdDose=d.IdDose GROUP BY m.Nome;",
         "Relação Vacina e Origem":"SELECT lab.Nome, lab.País, v.Nome, count(v.Nome) FROM Laboratorio lab, Produzida_por  p, Vacina v WHERE lab.IdLaboratorio=p.IdLaboratório AND v.IdVacina=p.IdVacina GROUP BY v.Nome;",
         "Doses aplicadas por municípios" : "SELECT m.Nome, count(d.IdDose) FROM vacinas_db.municipios m, vacinas_db.habita_em h, vacinas_db.pessoas p, vacinas_db.aplicada_em a, vacinas_db.doses d WHERE m.Código=h.IdMunicipio AND h.IdPessoa=p.IdPessoa AND p.IdPessoa=a.IdPessoa AND a.IdDose=d.IdDose GROUP BY m.Nome;",
         "Pessoas vacinadas por faixa etária" : "SELECT p1.Nome, p1.Data_de_Nacimento FROM vacinas_db.pessoas p1  WHERE p1.Data_de_Nacimento  < \"1950-01-01\" AND EXISTS(SELECT * FROM vacinas_db.aplicada_em a WHERE a.IdPessoa=p1.Id);",
@@ -147,13 +147,13 @@ class Dialog_cred(QtWidgets.QDialog):
         print(username)
         print(pwd)
 
-        # connection = pymysql.connect(
-        # host=hostname,
-        # user=username,
-        # password=pwd,
-        # db=dbname
-        # )
-        # cursor = connection.cursor()
+        connection = pymysql.connect(
+        host=hostname,
+        user=username,
+        password=pwd,
+        db=dbname
+        )
+        cursor = connection.cursor()
         widget.setCurrentIndex(widget.currentIndex() + 1)
         
 

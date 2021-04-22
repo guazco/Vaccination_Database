@@ -116,9 +116,6 @@ class Dialog(QtWidgets.QDialog):
         df = pd.read_sql(querie, connection)
         model = pandasModel(df)
         self.ui.table.setModel(model)
-        
-
-    
 
 class Dialog_cred(QtWidgets.QDialog):
 

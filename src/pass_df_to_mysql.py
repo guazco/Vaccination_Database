@@ -8,13 +8,12 @@ import pymysql
 import pandas as pd
 
 
+print("Credenciais: ")
 # Credentials to database connection ADD
-hostname="localhost"
-dbname="teste2"
-username="enzo"
-pwd="password"
-
-
+hostname=input("hostname: ")
+dbname=input("dbname: ")
+username=input("username: ")
+pwd=input("pwd: ")
 
 #cria município
 print("Lendo arquivo de municípios")

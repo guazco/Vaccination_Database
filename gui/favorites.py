@@ -81,7 +81,7 @@ class Ui_Dialog(object):
         self.box.setItemText(1, _translate("Dialog", "Relação Vacina e Origem"))
         self.box.setItemText(2, _translate("Dialog", "Doses aplicadas por municípios"))
         self.box.setItemText(3, _translate("Dialog", "Pessoas vacinadas por faixa etária"))
-        self.box.setItemText(4, _translate("Dialog", "Número de doses importadas"))
+        self.box.setItemText(4, _translate("Dialog", "Número de pessoas por municípios"))
         self.box.setItemText(5, _translate("Dialog", "Número de pessoas que receberam a 2° dose por município"))
         self.back.setText(_translate("Dialog", "Z"))
         self.search.setText(_translate("Dialog", "Search"))

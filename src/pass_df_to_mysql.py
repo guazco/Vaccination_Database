@@ -5,10 +5,16 @@ from sqlalchemy import create_engine
 import pymysql
 import pandas as pd
 
+print("Credenciais: ")
+# Credentials to database connection ADD
+hostname=input("hostname: ")
+dbname=input("dbname: ")
+username=input("username: ")
+pwd=input("pwd: ")
 
 #cria município
 print("Lendo arquivo de municípios")
-arquivo = 'c3d64a3788342bbdd97d01ef7694f1a0.xlsx'
+arquivo = 'data/municipios.xlsx'
 municipio = Municipio("Município")
 municipio.fill_table(arquivo)
 municipio.create_df()
@@ -22,7 +28,7 @@ df_municipio = df_municipio.drop(df_municipio.loc[645:659].index).astype({"Códi
 
 #cria o resto daqui pra baixo
 print("Lendo arquivo com outros dados")
-arquivo_2 = 'part-00000-9cca567b-94bf-4d83-88ae-c2efe6fb4794.c000.csv'
+arquivo_2 = 'data/partial-vacinas-sp.csv'
 df_other_info = other_info(arquivo_2)
 df_other_info = df_other_info.drop(['vacina_fabricante_referencia', 'paciente_endereco_cep'], axis=1) # removendo colunas com muitos vazios
 df_other_info = df_other_info.loc[df_other_info['vacina_categoria_codigo'].notnull()].astype({"vacina_categoria_codigo" : str})
@@ -130,12 +136,6 @@ produzida_por.fill_table(df_other_info, lab_vac_id)
 produzida_por.create_df()
 df_produzida_por = produzida_por.out_df()
 
-# Credentials to database connection ADD
-hostname=""
-dbname=""
-username=""
-pwd=""
-
 connection = pymysql.connect(
     host=hostname,
     user=username,
@@ -149,7 +149,7 @@ engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}".format(host=hos
 
 # Convert dataframe to sql table
 print("Criando tabela Pessoa")
-df_pessoa['Data_de_Nascimento'] = pd.to_datetime(df_pessoa['Data_de_Nascimento'], format='%Y-%m-%d')
+#df_pessoa['Data_de_Nascimento'] = pd.to_datetime(df_pessoa['Data_de_Nascimento'], format='%Y-%m-%d')
 df_pessoa.to_sql('pessoas', engine, index=False,
             dtype={
                 'Id' : sqlalchemy.types.VARCHAR(length=64),
@@ -193,7 +193,7 @@ df_dose.to_sql('doses', engine, index=False,
 print("Tabela Doses criada")
 
 print("Criando tabela Unidade Saude")
-df_unidade_saude.to_sql('Unidade Saude', engine, index=False,
+df_unidade_saude.to_sql('unidade_saude', engine, index=False,
                        dtype={
                            'IdUBS' : sqlalchemy.types.INT,
                            'Nome' : sqlalchemy.types.VARCHAR(length=60),
@@ -211,7 +211,7 @@ df_laboratorio.to_sql('laboratorio', engine, index=False,
 print("Tabela Laboratorio criada")
 
 print("Criando tabela Aplicada_Em")
-df_aplicada_em.to_sql('Aplicada_em', engine, index=False,
+df_aplicada_em.to_sql('aplicada_em', engine, index=False,
                      dtype={
                          'IdPessoa' : sqlalchemy.types.VARCHAR(length=64),
                          'IdDose' : sqlalchemy.types.VARCHAR(length=15),
@@ -220,7 +220,7 @@ df_aplicada_em.to_sql('Aplicada_em', engine, index=False,
 print("Tabela Aplicada_Em criada")
 
 print("Criando tabela Habita_Em")
-df_habita_em.to_sql('Habita_Em', engine, index=False,
+df_habita_em.to_sql('habita_em', engine, index=False,
                    dtype={
                        'IdPessoa' : sqlalchemy.types.VARCHAR(length=64),
                        'IdMunicipio' : sqlalchemy.types.INT
@@ -228,7 +228,7 @@ df_habita_em.to_sql('Habita_Em', engine, index=False,
 print("Tabela Habita_Em criada")
 
 print("Criando tabela Tem")
-df_tem.to_sql('Tem', engine, index=False,
+df_tem.to_sql('tem', engine, index=False,
              dtype={
                  'IdDose' : sqlalchemy.types.VARCHAR(length=15),
                  'IdUBS' : sqlalchemy.types.INT
@@ -236,7 +236,7 @@ df_tem.to_sql('Tem', engine, index=False,
 print("Tabela Tem criada")
 
 print("Criando tabela Fica_No")
-df_fica_no.to_sql('Fica_No', engine, index=False,
+df_fica_no.to_sql('fica_no', engine, index=False,
                  dtype={
                      'IdUBS' : sqlalchemy.types.INT,
                      'IdMunicipio' : sqlalchemy.types.INT
@@ -244,7 +244,7 @@ df_fica_no.to_sql('Fica_No', engine, index=False,
 print("Tabela Fica_No criada")
 
 print("Criando tabela Enviada_Para")
-df_enviada_para.to_sql('Enviada_Para', engine, index=False,
+df_enviada_para.to_sql('enviada_para', engine, index=False,
                       dtype={
                           'IdVacina' : sqlalchemy.types.SMALLINT,
                           'IdUBS' : sqlalchemy.types.INT
@@ -252,7 +252,7 @@ df_enviada_para.to_sql('Enviada_Para', engine, index=False,
 print("Tabela Enviada_Para criada")
 
 print("Criando tabela Do_Tipo")
-df_do_tipo.to_sql('Do_Tipo', engine, index=False,
+df_do_tipo.to_sql('do_tipo', engine, index=False,
                  dtype={
                      'IdDose' : sqlalchemy.types.VARCHAR(length=15),
                      'IdVacina' : sqlalchemy.types.SMALLINT
@@ -260,7 +260,7 @@ df_do_tipo.to_sql('Do_Tipo', engine, index=False,
 print("Tabela Do_Tipo criada")
 
 print("Criando tabela Produzida_Por")
-df_produzida_por.to_sql('Produzida_Por', engine, index=False,
+df_produzida_por.to_sql('produzida_por', engine, index=False,
                        dtype={
                            'IdVacina' : sqlalchemy.types.SMALLINT,
                            'IdLaboratorio' : sqlalchemy.types.VARCHAR(length=10)
@@ -287,11 +287,11 @@ cursor.execute("ALTER TABLE pessoas ADD PRIMARY KEY (Id)")
 print('PK de pessoas criada.\n')
 
 print('Crianda PK de unidade saude')
-cursor.execute('ALTER TABLE `unidade saude` ADD PRIMARY KEY (IdUBS)')
+cursor.execute('ALTER TABLE unidade_saude ADD PRIMARY KEY (IdUBS)')
 print('PK de unidade saude criada.\n')
 
 print('criando PK de vacinas')
-cursor.execute('ALTER TABLE `vacinas` ADD PRIMARY KEY (IdVacina)')
+cursor.execute('ALTER TABLE vacinas ADD PRIMARY KEY (IdVacina)')
 print('PK de vacinas criada.\n')
 
 
@@ -306,12 +306,12 @@ print('FK s de do_tipo criadas.\n')
 
 print('Criando FK s de enviada_para')
 cursor.execute('ALTER TABLE enviada_para ADD FOREIGN KEY (IdVacina) REFERENCES vacinas(IdVacina)')
-cursor.execute('ALTER TABLE enviada_para ADD FOREIGN KEY (IdUBS) REFERENCES `unidade saude`(IdUBS)')
+cursor.execute('ALTER TABLE enviada_para ADD FOREIGN KEY (IdUBS) REFERENCES unidade_saude(IdUBS)')
 print('FK s de enviada_para criadas.\n')
 
 
 print('Criando FK s de fica_no')
-cursor.execute('ALTER TABLE fica_no ADD FOREIGN KEY (IdUBS) REFERENCES `unidade saude`(IdUBS)')
+cursor.execute('ALTER TABLE fica_no ADD FOREIGN KEY (IdUBS) REFERENCES unidade_saude(IdUBS)')
 cursor.execute('ALTER TABLE fica_no ADD FOREIGN KEY (IdMunicipio) REFERENCES municipios(Código)')
 print('FK s de fica_no criadas.\n')
 
@@ -330,7 +330,7 @@ print('FK s de produzido_por criadas.\n')
 
 print('Criando FK s de tem')
 cursor.execute('ALTER TABLE tem ADD FOREIGN KEY (IdDose) REFERENCES doses(IdDose)')
-cursor.execute('ALTER TABLE tem ADD FOREIGN KEY (IdUBS) REFERENCES `unidade saude`(IdUBS)')
+cursor.execute('ALTER TABLE tem ADD FOREIGN KEY (IdUBS) REFERENCES unidade_saude(IdUBS)')
 print('FK s de tem criadas.\n')
 
 

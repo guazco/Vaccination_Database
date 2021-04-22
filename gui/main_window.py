@@ -68,7 +68,6 @@ class MainWindow(QtWidgets.QMainWindow):
         df = pd.read_sql(text, connection)
         model = pandasModel(df)
         self.ui.tableView.setModel(model)
-        self.ui.tableView.adjustSize()
     
     def save_quer(self):
         text = self.ui.plainTextEdit.toPlainText()
@@ -105,19 +104,19 @@ class Dialog(QtWidgets.QDialog):
 
     def fav_search(self):
         quer_dic = {
-            "Doses distribuídas para cada município" : "SELECT m.Nome, count(d.IdDose) FROM municipios m, unidade_saude u, tem t, doses d, fica_no f WHERE m.Código=f.IdMunicipio AND f.IdUBS=u.IdUBS AND u.IdUBS=t.IdUBS AND t.IdDose=d.IdDose GROUP BY m.Nome;",
-            "Relação Vacina e Origem":"SELECT lab.Nome, lab.PaIs, v.Nome, count(v.Nome) FROM laboratorio lab, produzida_por  p, vacinas v WHERE lab.IdLaboratorio=p.IdLaboratorio AND v.IdVacina=p.IdVacina GROUP BY v.Nome;",
+            "Doses distribuídas para cada município" : "SELECT m.Nome, count(d.IdDose) FROM municipios m, `unidade saude` u, tem t, doses d, fica_no f WHERE m.Código=f.IdMunicipio AND f.IdUBS=u.IdUBS AND u.IdUBS=t.IdUBS AND t.IdDose=d.IdDose GROUP BY m.Nome;",
+            "Relação Vacina e Origem":"SELECT lab.Nome AS Laboratório, lab.Pais, v.Nome AS Vacina, count(d.IdDose) AS `Doses aplicadas` FROM parcial.laboratorio lab, parcial.produzida_por  p, parcial.vacinas v, parcial.do_tipo dt, parcial.doses d WHERE lab.IdLaboratorio=p.IdLaboratorio AND v.IdVacina=p.IdVacina AND v.IdVacina=dt.IdVacina AND  d.IdDose=dt.IdDose GROUP BY v.Nome;",
             "Doses aplicadas por municípios" : "SELECT m.Nome, count(d.IdDose) FROM municipios m, habita_em h, pessoas p, aplicada_em a, doses d WHERE m.Código=h.IdMunicipio AND h.IdPessoa=p.Id AND p.Id=a.IdPessoa AND a.IdDose=d.IdDose GROUP BY m.Nome;",
             "Pessoas vacinadas por faixa etária" : "SELECT p1.Nome, p1.Data_de_Nascimento FROM pessoas p1  WHERE p1.Data_de_Nascimento  < \"1950-01-01\" AND EXISTS(SELECT * FROM aplicada_em a WHERE a.IdPessoa=p1.Id);",
-            "Número de doses importadas" : "SELECT l.Pais, l.Nome, v.Nome, count(dt.idDose) FROM laboratorio l, produzida_por pp, vacinas v, do_tipo dt, doses d WHERE l.IdLaboratorio=pp.IdLaboratorio AND v.IdVacina=pp.IdVacina AND v.IdVacina=dt.IdVacina AND d.IdDose=dt.IdDose AND l.Pais!=\"Brasil\" GROUP BY l.Nome;",
-            "Número de pessoas que receberam a 2° dose por município" : "SELECT m.Nome, count(p.cpf) FROM pessoas p, aplicada_em ae, doses d, habita_em h, municipios m WHERE p.Id=ae.IdPessoa AND d.Número=\"2ª dose\" AND p.Id = h.IdPessoa AND h.IdMunicipio = m.Código GROUP BY m.Nome;"
+            "Número de doses importadas da China" : "SELECT l.Pais, l.Nome, v.Nome, count(dt.idDose) FROM laboratorio l, produzida_por pp, vacinas v, do_tipo dt, doses d WHERE l.IdLaboratorio=pp.IdLaboratorio AND v.IdVacina=pp.IdVacina AND v.IdVacina=dt.IdVacina AND d.IdDose=dt.IdDose AND l.Pais=\"China\" GROUP BY l.Nome;",
+            "Número de pessoas que receberam a 2° dose por município" : "SELECT m.Nome, count(p.Id) FROM parcial.pessoas p, parcial.aplicada_em ae, parcial.doses d, parcial.habita_em h, parcial.municipios m WHERE p.Id=ae.IdPessoa AND d.IdDose=ae.IdDose AND d.Número='    2ª Dose' AND p.Id = h.IdPessoa AND h.IdMunicipio = m.Código GROUP BY m.Código;"
         }
         pesquisa = self.ui.box.currentText()
         querie = quer_dic[pesquisa]
         df = pd.read_sql(querie, connection)
         model = pandasModel(df)
         self.ui.table.setModel(model)
-        self.ui.table.adjustSize()
+        
 
     
 

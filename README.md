@@ -10,6 +10,8 @@ Nele foram aplicados técnicas para transformação de arquivos `.csv` e `.xlsx`
 
 Para a criação das tabelas foi feito um tratamento dos dados do arquivos usados em conjunto com a geração de informações falsas aleatóriamente para preencher as informações faltantes que seriam necessárias para o modelo das tabelas planejado previamente ao projeto prático. Um vez feito isso foi necessário determinar as chaves primárias (PK) e extrangeiras (FK) para o funcionamento das tabelas.
 
+---
+
 ### Requisitos
 
 Os programas dos projeto foram escritos em python 3, na versão 3.8.5. e as instruções a seguir referem-se ao sistema operacional Linux (o desenvolvimento foi feito na distribuição Ubuntu 20.04)
@@ -66,6 +68,8 @@ sudo mysql_secure_installation
 ```
 e siga os passos para a instalação com o setup de uma senha, que será usada para os acessos aos bancos de dados.
 
+---
+
 ### Primeiro acesso ao MySQL
 
 Para acessar o MySQL, abra uma aba do terminal e digite:
@@ -84,7 +88,15 @@ SELECT User, Host, plugin FROM mysql.user;
 
 ```
 
-Queremos, o plugin `caching_sha2_password` e não o `auth_socket`, que pode gerar problemas de acesso. Além disso o host deverá ser `localhost`. Para criar e dar as permissões ao novo usuário, siga o seguinte [tutorial.](https://www.digitalocean.com/community/tutorials/como-criar-um-novo-usuario-e-conceder-permissoes-no-mysql-pt)
+Queremos, o plugin `caching_sha2_password` e não o `auth_socket`, que pode gerar problemas de acesso. Além disso o host deverá ser `localhost`. Para criar e dar as permissões ao novo usuário, siga o seguinte [tutorial](https://www.digitalocean.com/community/tutorials/como-criar-um-novo-usuario-e-conceder-permissoes-no-mysql-pt).
+
+Talvez seja necessário, para algumas queries, rodar o seguinte comando:
+
+```SQL
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+```
+
+---
 
 ### Acessos ao MySQL
 Para acessar como o novo usuário criado, abra o terminal de digite:
@@ -117,6 +129,8 @@ SHOW DATABASES;
 
 Para sair do MySQL, digite `quit`.
 
+---
+
 ### Unzip dos dados
 
 Dentro da pasta `src/data/`, ao clonar ou baixar o repositório em questão, você encontrará um arquivo `.zip` contendo os dados dos municípios `municipios.xlsx` e uma parte dos dados (50000 primeiras linhas) referente à vacinação `partial-vacinas-sp.csv`, cuja fontes são:
@@ -135,6 +149,7 @@ rm data-files.zip
 
 ```
 
+---
 
 ### Gerar tabelas
 
@@ -147,6 +162,7 @@ python3 pass_df_to_mysql.py
 
 A partir daí o programa segue com a inserção das credenciais pelo terminal e a criação das tabelas. Quando tudo tiver sido gerado corretamente no terminal aparecerá a mensagem "Fim da execução".
 
+---
 
 ### Guia da UI
 

@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(802, 600)
         MainWindow.setAutoFillBackground(False)
         MainWindow.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(65, 80, 209), stop:1 rgb(36, 0, 157));")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -37,7 +37,7 @@ class Ui_MainWindow(object):
 "border-width: 2px;")
         self.pushButton.setObjectName("pushButton")
         self.tableView = QtWidgets.QTableView(self.centralwidget)
-        self.tableView.setGeometry(QtCore.QRect(80, 280, 371, 192))
+        self.tableView.setGeometry(QtCore.QRect(30, 251, 421, 271))
         self.tableView.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.tableView.setObjectName("tableView")
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 802, 26))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)

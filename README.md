@@ -90,6 +90,12 @@ SELECT User, Host, plugin FROM mysql.user;
 
 Queremos, o plugin `caching_sha2_password` e não o `auth_socket`, que pode gerar problemas de acesso. Além disso o host deverá ser `localhost`. Para criar e dar as permissões ao novo usuário, siga o seguinte [tutorial](https://www.digitalocean.com/community/tutorials/como-criar-um-novo-usuario-e-conceder-permissoes-no-mysql-pt).
 
+Talvez seja necessário, para algumas queries, rodar o seguinte comando:
+
+```SQL
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+```
+
 ---
 
 ### Acessos ao MySQL
